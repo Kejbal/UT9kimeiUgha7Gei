@@ -44,6 +44,12 @@ class PetController extends Controller
             'status'        => 'required|string',
         ]);
 
+        $photoUrls = $request->photoUrls ?? [];
+        $photoUrls = array_filter($request->photoUrls ?? [], fn($url) => ! empty($url));
+
+        $tags = $request->tags ?? [];
+        $tags = array_filter($request->tags ?? [], fn($tag) => ! empty($tag['name']) && ! empty($tag['id']));
+
         $response = Http::post("{$this->apiBase}/pet", [
             'id'        => (int) $request->id,
             'name'      => $request->name,
